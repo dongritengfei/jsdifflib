@@ -78,7 +78,14 @@ function diffUsingJS() {
         baseTextName: "Base Text",
         newTextName: "New Text",
         contextSize: contextSize,
-        viewType: $("inline").checked ? 1 : 0
+		// 0 : side by side; 1 : inline
+        viewType: $("inline").checked ? 1 : 0,
+		// if the line contains string "create time", then take it as equal
+		ignoreLine: function(change, baseTextLine, newTextLine){
+			if(change == "replace" && baseTextLine.indexOf("create time")>=0 &&  newTextLine.indexOf("create time")>=0){
+				return true;
+			}
+		}
     }));
 
     // scroll down to the diff view window.

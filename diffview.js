@@ -52,6 +52,7 @@ diffview = {
 		var newTextName = params.newTextName ? params.newTextName : "New Text";
 		var contextSize = params.contextSize;
 		var inline = (params.viewType == 0 || params.viewType == 1) ? params.viewType : 0;
+		var ignoreLine = params.ignoreLine; /* ignoreLine(change, baseTextLine, newTextLine)*/
 
 		if (baseTextLines == null)
 			throw "Cannot build diff view; baseTextLines is not defined.";
@@ -160,8 +161,11 @@ diffview = {
 				
 				toprows.push(node = document.createElement("tr"));
 				if (inline) {
-					if (change == "insert") {
-						addCellsInline(node, null, n++, newTextLines, change);
+					if(ignoreLine(change, baseTextLines[b], newTextLines[n])){
+						// equal
+						addCellsInline(node, b++, n++, baseTextLines, "equal");
+					}else if (change == "insert") {
+							addCellsInline(node, null, n++, newTextLines, change);
 					} else if (change == "replace") {
 						botrows.push(node2 = document.createElement("tr"));
 						if (b < be) addCellsInline(node, b++, null, baseTextLines, "delete");
@@ -173,6 +177,9 @@ diffview = {
 						addCellsInline(node, b++, n++, baseTextLines, change);
 					}
 				} else {
+					if(ignoreLine(change, baseTextLines[b], newTextLines[n])){
+						change = "equal";
+					}
 					b = addCells(node, b, be, baseTextLines, change);
 					n = addCells(node, n, ne, newTextLines, change);
 				}

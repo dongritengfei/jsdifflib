@@ -165,7 +165,7 @@ diffview = {
 						// equal
 						addCellsInline(node, b++, n++, baseTextLines, "equal");
 					}else if (change == "insert") {
-							addCellsInline(node, null, n++, newTextLines, change);
+						addCellsInline(node, null, n++, newTextLines, change);
 					} else if (change == "replace") {
 						botrows.push(node2 = document.createElement("tr"));
 						if (b < be) addCellsInline(node, b++, null, baseTextLines, "delete");
